@@ -1,0 +1,15 @@
+http://app.hnis.org/NDAppWebService.asmx/GetStudentsKb?vid20141114092017146id20141114092017146weeks1Term2016%E4%B8%8A
+http://app.hnis.org/NDAppWebService.asmx/GetTerm?dt=20160219
+http://app.hnis.org/NDAppWebService.asmx/Newappversionget?device=android&os=android&CurrentVersion=225&vid=&School=1001
+http://app.hnis.org/NDAppWebService.asmx/Newsget?type=5&pageindex=0&pagesize=5&vid=5180d59b0d89efb&id=20141114092017146&Access_Token=20141114092017146&res=
+http://app.hnis.org/NDAppWebService.asmx/Newsget?type=5&pageindex=0&pagesize=5&vid=5180d59b0d89efb&id=&Access_Token=&res=
+http://app.hnis.org/NDAppWebService.asmx/WSGetNewMENU?ak=agsvURNWGfPqrxLKF2ZW7b7f&id=20141114092017146&School=1001
+http://app.hnis.org/NDAppWebService.asmx/WSGetNewMENU?ak=agsvURNWGfPqrxLKF2ZW7b7f&id=&School=1001
+
+
+http://app.hnis.org/NDAppWebService.asmx/WSGetViewContent?ak=agsvURNWGfPqrxLKF2ZW7b7f&id=&type=1
+http://app.hnis.org/NDAppWebService.asmx/WSMemberLogin?ak=agsvURNWGfPqrxLKF2ZW7b7f&id=201340922108&password=123456&BDUserID=
+
+
+http://app.hnis.org/NDAppWebService.asmx/GetTerm?dt=20160219
+http://app.hnis.org/NDAppWebService.asmx/GetStudentsKb?vid=20141114092017146&id=20141114092017146&Term=2016ио&weeks=11
