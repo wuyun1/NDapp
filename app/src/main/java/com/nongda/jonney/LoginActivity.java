@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
 
-        Log.v("Tag", mActionbar.getCustomView() + "");
+//        Log.v("Tag", mActionbar.getCustomView() + "");
 //        initCustomActionBar();
     }
 

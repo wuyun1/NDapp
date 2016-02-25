@@ -1,8 +1,14 @@
 package com.nongda.jonney.util;
 
+import android.util.Log;
+import android.util.Xml;
+
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +30,28 @@ public class NDWBS {
     }
 
     private static String getStrings(String m_NAME, Map<String, Object> prop) {
-        return getWebService().getStrings(m_NAME, prop);
+        InputStream is =  getWebService().invoke(m_NAME, prop);
+        XmlPullParser localXmlPullParser = Xml.newPullParser();
+        String retstr = "";
+        try {
+            localXmlPullParser.setInput( is, "UTF-8");
+//            int i = localXmlPullParser.getEventType();
+//            System.out.println("result:"+i);
+//            i = localXmlPullParser.next();
+//            Log.v("Tag","i:"+i);
+//            Log.v("Tag","Name:"+localXmlPullParser.getName());
+//            Log.v("Tag","i:"+localXmlPullParser);
+            localXmlPullParser.next();
+            if ("string".equals(localXmlPullParser.getName()))
+                retstr = localXmlPullParser.nextText();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  retstr;
+
+        }
+
+        return  retstr;
     }
 
     public static String getTeachersCount() {

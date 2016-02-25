@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -33,9 +34,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     };
 
+    void start(){
+        if(System.currentTimeMillis()- available_time<1000)handler.sendEmptyMessageDelayed(GOTO_MAIN_ACTIVITY, 1500);
+        else handler.sendEmptyMessage(GOTO_MAIN_ACTIVITY);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        available_time = System.currentTimeMillis();
         setContentView(R.layout.activity_splash_screen);
         available_time = System.currentTimeMillis();
         new FetchDataTask().execute(url);
@@ -74,7 +81,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
 
-            handler.sendEmptyMessageDelayed(GOTO_MAIN_ACTIVITY, 2000);
+            start();
 
 
         }

@@ -13,7 +13,7 @@ public class MyWebServiceTest {
     // final static String NS = "http://WebXml.com.cn/";
 
     private static Object getStrings(String m_NAME, Map<String, Object> prop) {
-        return getWebService().getStrings(m_NAME, prop);
+        return getWebService().invoke(m_NAME, prop);
     }
 
     public static Object getUser(String name, String age) {

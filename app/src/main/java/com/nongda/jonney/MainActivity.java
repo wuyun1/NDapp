@@ -1,6 +1,7 @@
 package com.nongda.jonney;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements ViewPager.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, OnListFragmentInteractionListener {
+        implements ViewPager.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, OnListFragmentInteractionListener,OnFragmentInteractionListener {
 
     ActionBarDrawerToggle toggle;
     private FloatingActionButton fab = null;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity
                 Snackbar.make(fab, "服务器返回数据:\n" +
                         result, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                mTabs.get(1).onActivityResult(2,4,data);
+                this.onClick(mTabIndicator.get(1));
                 break;
         }
 
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 
         initDatas();
         // Set up the ViewPager with the sections adapter.
-        Log.v("Tag", "" + mViewPager);
+//        Log.v("Tag", "" + mViewPager);
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(this);
     }
@@ -111,15 +115,40 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initDatas() {
-        for (int i = 0; i < mTitles.length; i++) {
-            //官方提示为fragmrnt传数据 使用bundle
+//        for (int i = 0; i < mTitles.length; i++) {
+//            //官方提示为fragmrnt传数据 使用bundle
+//            ItemFragment tabFragment = new ItemFragment();
+//            Bundle args = new Bundle();
+//            args.putInt(ItemFragment.ARG_COLUMN_COUNT, i + 1);
+//            tabFragment.setArguments(args);
+//            mTabs.add(tabFragment);
+//        }
+        Fragment tabFragment = null;
+        Bundle args = null;
 
-            ItemFragment tabFragment = new ItemFragment();
-            Bundle args = new Bundle();
-            args.putInt(ItemFragment.ARG_COLUMN_COUNT, i + 1);
-            tabFragment.setArguments(args);
-            mTabs.add(tabFragment);
-        }
+        tabFragment = new ItemFragment();
+        args = new Bundle();
+        args.putInt(ItemFragment.ARG_COLUMN_COUNT, 2);
+        tabFragment.setArguments(args);
+        mTabs.add(tabFragment);
+
+        tabFragment = new BlankFragment();
+        args = new Bundle();
+        args.putInt(ItemFragment.ARG_COLUMN_COUNT, 2);
+        tabFragment.setArguments(args);
+        mTabs.add(tabFragment);
+
+        tabFragment = new ItemFragment();
+        args = new Bundle();
+        args.putInt(ItemFragment.ARG_COLUMN_COUNT, 1);
+        tabFragment.setArguments(args);
+        mTabs.add(tabFragment);
+
+        tabFragment = new BlankFragment();
+        args = new Bundle();
+        args.putInt(ItemFragment.ARG_COLUMN_COUNT, 2);
+        tabFragment.setArguments(args);
+        mTabs.add(tabFragment);
 
         mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
@@ -167,7 +196,7 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Log.v("Tag", id + "?" + android.R.id.home);
+//        Log.v("Tag", id + "?" + android.R.id.home);
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_lxh) {
             if (fab.isShown()) {
@@ -210,8 +239,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             this.onClick(mTabIndicator.get(3));
         } else if (id == R.id.nav_share) {
-            startActivity(new Intent(this, SplashScreenActivity.class));
-            finish();
+            startActivity(new Intent(this, ArticalActivity.class));
         } else if (id == R.id.nav_send) {
             startActivity(new Intent(this, SplashScreenActivity.class));
             finish();
@@ -290,6 +318,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

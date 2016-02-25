@@ -1,5 +1,6 @@
 package com.nongda.jonney.util;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class WebService {
         // PACE = pace;
     }
 
-    public String getStrings(final String M_NAME, Map<String, Object> prop) {
+    public InputStream invoke(final String M_NAME, Map<String, Object> prop) {
         // 创建HttpTransportSE传说对象 传入webservice服务器地址
         Object ret = null;
         String req = SERVER_URI + M_NAME;
@@ -47,15 +48,17 @@ public class WebService {
             // 对参数编码
             req += "?" + param;
         }
-        byte[] content = MyIOUtil.getContent(CacheMgr.GetResource(req, 0, null, false));
-        if (content == null)
-            return null;
-        try {
-            return new String(content, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return new String(content);
-        }
+
+        return  CacheMgr.GetResource(req, 0, null, false);
+//        byte[] content = MyIOUtil.getContent(CacheMgr.GetResource(req, 0, null, false));
+//        if (content == null)
+//            return null;
+//        try {
+//            return new String(content, "utf-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//            return new String(content);
+//        }
 
     }
 
