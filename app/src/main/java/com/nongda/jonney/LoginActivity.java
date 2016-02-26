@@ -21,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,10 +31,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.nongda.jonney.common.CommandResult;
 import com.nongda.jonney.global.GlobalApp;
 import com.nongda.jonney.server.UserService;
-import com.nongda.jonney.util.Preferences;
 import com.nongda.jonney.vo.User;
 
 import java.util.ArrayList;
@@ -357,7 +354,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
-        private CommandResult retdata = null;
 
         UserLoginTask(String email, String password) {
             mEmail = email;

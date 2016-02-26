@@ -1,19 +1,22 @@
 package com.nongda.jonney.util;
 
-import android.util.Log;
 import android.util.Xml;
 
-import com.nongda.jonney.common.CourseMgr;
+import com.nongda.jonney.server.CourseMgr;
+import com.nongda.jonney.vo.TermList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.InputStream;
 import java.io.StringReader;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -61,10 +64,20 @@ public class NDWBS {
         return getStrings(M_NAME_GTC, null);
     }
 
-    public static String getCTerm() {
+    public static TermList getCTerm() {
         Map<String, Object> prop = new HashMap<String, Object>();
-        prop.put("dt", "20160220");
-        return getStrings(M_NAME_GT, prop);
+        prop.put("dt", "2015");
+        String retstr = getStrings(M_NAME_GT, prop);
+        JSONArray localJSONArray = null;
+        TermList termList =   null;
+        try {
+            localJSONArray = new JSONObject(retstr).getJSONArray("Response");
+            termList  = new TermList(localJSONArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+        return termList;
     }
 
     //http://app.hnis.org/NDAppWebService.asmx/WSMemberLogin?ak=agsvURNWGfPqrxLKF2ZW7b7f&id=201340922108&password=123456&BDUserID=201340922108

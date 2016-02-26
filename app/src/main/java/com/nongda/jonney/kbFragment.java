@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nongda.jonney.common.CourseMgr;
+import com.nongda.jonney.server.CourseMgr;
 import com.nongda.jonney.global.GlobalApp;
 import com.nongda.jonney.server.UserService;
 import com.nongda.jonney.util.NDWBS;
@@ -99,9 +100,40 @@ public class kbFragment extends Fragment {
         // Inflate the layout for this fragment
 
         mContent = inflater.inflate(R.layout.fragment_kb, container, false);
-        txt1 =  (TextView) mContent.findViewById(R.id.txt_message);
-        showkb();
+        initView();
+        initDatas();
+
         return mContent;
+    }
+
+    private void initDatas() {
+
+
+
+
+    }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+//        Log.v("Tag","kbFragment onStart");
+        showkb();
+    }
+
+    private void initView() {
+        txt1 =  (TextView) mContent.findViewById(R.id.txt_message);
+
+
+    }
+
+    void showtipmes(String tip){
+        Log.v("Tag","s"+tip);
+        Message aa = Message.obtain();
+        aa.what = 2;
+        aa.obj = tip;
+        Log.v("Tag","s"+aa.obj);
+        handler.sendMessage(aa);
     }
 
     private void showkb() {
@@ -110,12 +142,9 @@ public class kbFragment extends Fragment {
             new Thread(){
                 @Override
                 public void run() {
-                    User user = GlobalApp.getInstance().getUser();
-                    CourseMgr courseMgr = NDWBS.getCoursefromStudent(user.getId(),"2016上","11");
-                    Message message = new Message();
-                    message.what = 2;
-                    message.obj = courseMgr.result;
-                    handler.sendMessage(message);
+//                    User user = GlobalApp.getInstance().getUser();
+//                    CourseMgr courseMgr = NDWBS.getCoursefromStudent(user.getId(),"2016上","11");
+                    showtipmes(NDWBS.getCTerm().toString());
 //                    txt1.setText(courseMgr.result);
                 }
             }.start();

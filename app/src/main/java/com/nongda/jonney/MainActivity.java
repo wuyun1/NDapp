@@ -189,12 +189,15 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public CharSequence getPageTitle(int position) {
+            public CharSequence getPageTitle(int position)  {
+
                 return mTitles[position];
             }
 
             @Override
             public Fragment getItem(int position) {
+
+//                Log.v("Tag","Get Fragment position:"+position);
                 return mTabs.get(position);
             }
         };
@@ -331,8 +334,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // Log.e("TAG", "position = " + position + " , positionOffset = "
-        // + positionOffset);
+//         Log.e("TAG", "position = " + position + " , positionOffset = "
+//         + positionOffset);
 
         if (positionOffset > 0) {
             ChangeColorIconWithTextView left = mTabIndicator.get(position);

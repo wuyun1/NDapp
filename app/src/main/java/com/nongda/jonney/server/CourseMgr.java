@@ -1,5 +1,6 @@
-package com.nongda.jonney.common;
+package com.nongda.jonney.server;
 
+import com.nongda.jonney.common.CacheMgr;
 import com.nongda.jonney.util.StoreFileObject;
 import com.nongda.jonney.vo.CourseItemBase;
 import com.nongda.jonney.vo.CourseItemStudent;

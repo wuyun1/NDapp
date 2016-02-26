@@ -1,8 +1,5 @@
 package com.nongda.jonney.server;
 
-import android.util.Log;
-
-import com.nongda.jonney.common.CommandResult;
 import com.nongda.jonney.util.NDWBS;
 import com.nongda.jonney.util.Preferences;
 import com.nongda.jonney.vo.User;
