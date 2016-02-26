@@ -2,9 +2,6 @@ package com.nongda.jonney;
 
 import android.util.Xml;
 
-import com.nongda.jonney.server.UserLogin;
-import com.nongda.jonney.util.MyIOUtil;
-
 import org.junit.Test;
 import org.xmlpull.v1.XmlPullParser;
 

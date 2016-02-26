@@ -19,15 +19,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nongda.jonney.dummy.DummyContent;
+import com.nongda.jonney.global.GlobalApp;
+import com.nongda.jonney.server.UserService;
+import com.nongda.jonney.vo.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements ViewPager.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, OnListFragmentInteractionListener,OnFragmentInteractionListener {
-
+    GlobalApp globalApp = null;
     ActionBarDrawerToggle toggle;
     private FloatingActionButton fab = null;
     private NavigationView navigationView = null;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     private FragmentPagerAdapter mAdapter;
     private DrawerLayout drawer = null;
     private ImageView loginimg = null;
+    private TextView lable_username = null;
+    private TextView lable_xuehao = null;
 
     private String[] mTitles = new String[]{"First Fragment!",
             "Second Fragment!", "Third Fragment!", "Fourth Fragment!"};
@@ -48,22 +54,38 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println(requestCode + "" + data);
         switch (resultCode) {
+            //用户登陆
             case 1:   /*取得来自SecondActivity页面的数据，并显示到画面*/
                 Bundle bundle = data.getExtras();            /*获取Bundle中的数据，注意类型和key*/
                 String result = bundle.getString("Result");
-                Snackbar.make(fab, "服务器返回数据:\n" +
-                        result, Snackbar.LENGTH_LONG)
+                Snackbar.make(fab,result , Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                applyUser( globalApp.getUser());
 
-                mTabs.get(1).onActivityResult(2,4,data);
-                this.onClick(mTabIndicator.get(1));
+                break;
+            //注销登录
+            case 2:   /*取得来自SecondActivity页面的数据，并显示到画面*/
+                lable_username.setText(getResources().getText(R.string.user_name_placehold));
+                lable_xuehao.setText(getResources().getText(R.string.xuehao_placehold));
                 break;
         }
 
     }
 
+    private void applyUser(User user) {
+        Intent intent = new Intent();
+        intent.putExtra("Result",user.toString());
+        mTabs.get(1).onActivityResult(2,4,intent);
+        mTabs.get(1).onActivityResult(2,4,intent);
+        lable_xuehao.setText(user.getZhangHao());
+        lable_username.setText(user.getUserName());
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        globalApp = (GlobalApp) getApplication();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,6 +98,14 @@ public class MainActivity extends AppCompatActivity
 //        Log.v("Tag", "" + mViewPager);
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(this);
+
+        initUserinfo();
+    }
+
+    private void initUserinfo() {
+        if(UserService.isLogined()){
+            applyUser(globalApp.getUser());
+        }
     }
 
     private void initView() {
@@ -84,14 +114,18 @@ public class MainActivity extends AppCompatActivity
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, (Toolbar) getSupportActionBar().getCustomView(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        loginimg = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        View nav_view = navigationView.getHeaderView(0);
+
+        loginimg = (ImageView)nav_view.findViewById(R.id.imageView);
         loginimg.setOnClickListener(this);
+        lable_username = (TextView) nav_view.findViewById(R.id.user_name);
+        lable_xuehao = (TextView) nav_view.findViewById(R.id.user_xuehao);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -126,10 +160,7 @@ public class MainActivity extends AppCompatActivity
         Fragment tabFragment = null;
         Bundle args = null;
 
-        tabFragment = new ItemFragment();
-        args = new Bundle();
-        args.putInt(ItemFragment.ARG_COLUMN_COUNT, 2);
-        tabFragment.setArguments(args);
+        tabFragment = new kbFragment();
         mTabs.add(tabFragment);
 
         tabFragment = new BlankFragment();
@@ -239,7 +270,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             this.onClick(mTabIndicator.get(3));
         } else if (id == R.id.nav_share) {
-            startActivity(new Intent(this, ArticalActivity.class));
+//            startActivity(new Intent(this, ArticalActivity.class));
         } else if (id == R.id.nav_send) {
             startActivity(new Intent(this, SplashScreenActivity.class));
             finish();
@@ -255,12 +286,18 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imageView:
-                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 0);
-                drawer.closeDrawer(GravityCompat.START);
+                if(UserService.isLogined()){
+                    startActivityForResult(new Intent(MainActivity.this, ArticalActivity.class), 0);
+                }else {
+                    startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 0);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+
                 break;
             case R.id.fab:
                 Snackbar.make(view, "功能暂未实现,尽请期待...", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
+                fab.hide();
                 break;
             case R.id.id_indicator_one:
                 resetOtherTabs();

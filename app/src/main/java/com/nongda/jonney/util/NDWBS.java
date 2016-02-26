@@ -3,6 +3,8 @@ package com.nongda.jonney.util;
 import android.util.Log;
 import android.util.Xml;
 
+import com.nongda.jonney.common.CourseMgr;
+
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
@@ -11,6 +13,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -73,6 +76,20 @@ public class NDWBS {
         prop.put("BDUserID", xuehao);
         return getStrings(M_NAME_GUI, prop);
     }
+    //    http://app.hnis.org/NDAppWebService.asmx/GetStudentsKb?vid=20141114092017146&id=20141114092017146&Term=2016上&weeks=11
+    public static CourseMgr getCoursefromStudent(String xuehao,String xueqi,String weeknum ){
+
+        Map<String, Object> prop = new HashMap<String, Object>();
+        prop.put("id", xuehao);
+        prop.put("vid", xuehao);
+        prop.put("Term", xueqi);
+        prop.put("weeks", weeknum);
+        String str =  getStrings("GetStudentsKb", prop);
+        CourseMgr courseMgr= new CourseMgr();
+        courseMgr.init();
+        courseMgr.parseJsonMulti(str,false);
+        return  courseMgr;
+    }
 
     private static WebService getWebService() {
         if (webService == null) {
@@ -80,6 +97,8 @@ public class NDWBS {
         }
         return webService;
     }
+
+
 
     public static void parse(String protocolXML) {
 
@@ -93,29 +112,5 @@ public class NDWBS {
         }
 
     }
-//	public NDWBS() {
-//		super("http://app.hnis.org/NDAppWebService.asmx", "/NDAppWebService.asmx/");
-//	}
-//
-//	public Object getCTerm() {
-//		String M_NAME = "GetTerm";
-//		Map<String, Object> prop = new HashMap<String, Object>();
-//		prop.put("df", "2016-02-20");
-//		return getStrings(M_NAME, prop);
-//	}
-//
-//	// http://app.hnis.org/NDAppWebService.asmx/GetTeacherAddressListCount
-//	public Object getTeachersCount() {
-//		String M_NAME = "GetTeacherAddressListCount";
-//
-//		return getStrings(M_NAME, null);
-//	}
-//
-////	public String getWeather(String citys) {
-////		String M_NAME = "getWeatherbyCityName";
-////		Map<String, Object> prop = new HashMap<String, Object>();
-////		prop.put("theCityName", citys);
-////		return getStrings(M_NAME, prop);
-////	}
 
 }

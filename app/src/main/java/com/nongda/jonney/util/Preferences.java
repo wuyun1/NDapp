@@ -1,6 +1,7 @@
 package com.nongda.jonney.util;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 public class Preferences {
@@ -352,7 +353,7 @@ public class Preferences {
     }
 
     public static void init(Application paramApplication) {
-        prefs = paramApplication.getSharedPreferences("unicomcm_pref", 0);
+        prefs = paramApplication.getSharedPreferences("unicomcm_pref", Context.MODE_PRIVATE);
     }
 
     private static void put(String paramString, Object paramObject) {

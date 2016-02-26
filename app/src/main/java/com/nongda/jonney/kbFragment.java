@@ -4,38 +4,64 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.nongda.jonney.common.CourseMgr;
+import com.nongda.jonney.global.GlobalApp;
+import com.nongda.jonney.server.UserService;
+import com.nongda.jonney.util.NDWBS;
+import com.nongda.jonney.vo.User;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BlankFragment} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BlankFragment#newInstance} factory method to
+ * Use the {@link kbFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment extends Fragment {
+public class kbFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private View mContent = null;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private TextView txt1 = null;
 
     private OnFragmentInteractionListener mListener;
+    private View mContent;
+    private  TextView txt1;
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 2:
+                    txt1.setText(msg.obj.toString());
+                    break;
+            }
+        }
+    };
 
-    public BlankFragment() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 2:
+                showkb();
+                break;
+        }
+    }
+
+    public kbFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +71,11 @@ public class BlankFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
+     * @return A new instance of fragment kbFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BlankFragment newInstance(String param1, String param2) {
-        BlankFragment fragment = new BlankFragment();
+    public static kbFragment newInstance(String param1, String param2) {
+        kbFragment fragment = new kbFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,9 +85,7 @@ public class BlankFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        Log.v("Tag","onCreate");
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -72,13 +96,40 @@ public class BlankFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(mContent!=null) return  mContent;
-//        Log.v("Tag","onCreateView");
         // Inflate the layout for this fragment
-        mContent = inflater.inflate(R.layout.fragment_blank, container, false);
 
-        txt1 =  (TextView) mContent.findViewById(R.id.message);
-
+        mContent = inflater.inflate(R.layout.fragment_kb, container, false);
+        txt1 =  (TextView) mContent.findViewById(R.id.txt_message);
+        showkb();
         return mContent;
+    }
+
+    private void showkb() {
+
+        if(UserService.isLogined()){
+            new Thread(){
+                @Override
+                public void run() {
+                    User user = GlobalApp.getInstance().getUser();
+                    CourseMgr courseMgr = NDWBS.getCoursefromStudent(user.getId(),"2016上","11");
+                    Message message = new Message();
+                    message.what = 2;
+                    message.obj = courseMgr.result;
+                    handler.sendMessage(message);
+//                    txt1.setText(courseMgr.result);
+                }
+            }.start();
+
+        }else{
+
+            Message message = new Message();
+            message.what = 2;
+            message.obj = "请先登录";
+            handler.sendMessage(message);
+
+        }
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,24 +155,5 @@ public class BlankFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.v("onActivityResult",txt1+"");
-//        txt1.setText(data.getExtras().get("Result").toString());
-
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
 }

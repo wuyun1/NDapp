@@ -61,6 +61,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         //执行后台任务
         @Override
         protected Bitmap doInBackground(String... strings) {
+
+            getApplication();
 //            Bitmap bitmap=null;
 //            try {
             //通过传入的图片地址，获取图片
@@ -80,6 +82,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
+
+
 
             start();
 

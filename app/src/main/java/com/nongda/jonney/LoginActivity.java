@@ -33,7 +33,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.nongda.jonney.common.CommandResult;
-import com.nongda.jonney.server.UserLogin;
+import com.nongda.jonney.global.GlobalApp;
+import com.nongda.jonney.server.UserService;
+import com.nongda.jonney.util.Preferences;
+import com.nongda.jonney.vo.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,12 +165,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        getDelegate().setSupportActionBar(toolbar);
         ActionBar mActionbar = getSupportActionBar();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            mActionbar.setDisplayHomeAsUpEnabled(true);
-
-        }
+        mActionbar.setDisplayHomeAsUpEnabled(true);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//            // Show the Up button in the action bar.
+//            mActionbar.setDisplayHomeAsUpEnabled(true);
+//
+//        }
 
 
 //        Log.v("Tag", mActionbar.getCustomView() + "");
@@ -365,9 +368,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            retdata = UserLogin.login(mEmail, mPassword);
+            User user = UserService.login(mEmail, mPassword);
+//            Log.v("##########:",UserService.login_sRequest+"sdafasdfasdgsadfasdf");
+            boolean success = "1".equals(UserService.login_status);
+            if(success){
+                GlobalApp globalApp = (GlobalApp) getApplication();
+                globalApp.setUser(user);
+            }
 
-            return retdata.isFlag();
+            return success;
 
         }
 
@@ -375,17 +384,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
+            Snackbar.make(LoginActivity.this.findViewById(R.id.login_form), UserService.login_sRequest, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
 
             if (success) {
+
                 /*给上一个Activity返回结果*/
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
-                bundle.putString("Result", retdata.getData() + "");
+                bundle.putString("Result", UserService.login_sRequest);
                 intent.putExtras(bundle);
                 LoginActivity.this.setResult(1, intent);/*结束本Activity*/
-                Snackbar.make(LoginActivity.this.findViewById(R.id.login_form), "服务器返回数据:\n" +
-                        retdata.getData(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
                 LoginActivity.this.finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
