@@ -137,9 +137,10 @@ public class CacheMgr {
             e.printStackTrace();
             return null;
         }
+        if(!boolean1){
         DeleteFile(file1);
         DeleteFile(file);
-        SetResource(abyte0, body, head, l, context);
+        SetResource(abyte0, body, head, l, context);}
 
         return new ByteArrayInputStream(abyte0);
     }

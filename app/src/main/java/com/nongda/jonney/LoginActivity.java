@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.nongda.jonney.common.CacheMgr;
 import com.nongda.jonney.global.GlobalApp;
 import com.nongda.jonney.server.UserService;
 import com.nongda.jonney.vo.User;
@@ -394,8 +395,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 LoginActivity.this.finish();
             } else {
+                if(CacheMgr.checkNetwork()){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                mPasswordView.requestFocus();}else{
+                    Snackbar.make(mLoginFormView, "网络错误无法连接", Snackbar.LENGTH_SHORT)
+                            .setAction("Action", null).show();
+                }
+
 
             }
         }

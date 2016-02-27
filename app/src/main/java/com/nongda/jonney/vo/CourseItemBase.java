@@ -13,6 +13,22 @@ public class CourseItemBase
   private String timeOfDay;
   private String timeOfWeek;
 
+  @Override
+  public String toString() {
+    return "{" +
+            "Condition='" + Condition + '\'' +
+            ", Depater_Name='" + Depater_Name + '\'' +
+            ", SexOrNj='" + SexOrNj + '\'' +
+            ", TeacherOrCalss_name='" + TeacherOrCalss_name + '\'' +
+            ", name='" + name + '\'' +
+            ", place='" + place + '\'' +
+            ", sFlagKb='" + sFlagKb + '\'' +
+            ", time='" + time + '\'' +
+            ", timeOfDay='" + timeOfDay + '\'' +
+            ", timeOfWeek='" + timeOfWeek + '\'' +
+            '}';
+  }
+
   public String getCondition()
   {
     return this.Condition;

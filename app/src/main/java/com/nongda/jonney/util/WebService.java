@@ -49,7 +49,7 @@ public class WebService {
             req += "?" + param;
         }
 
-        return  CacheMgr.GetResource(req, 0, null, false);
+        return  CacheMgr.GetResource(req, 0, null, true);
 //        byte[] content = MyIOUtil.getContent(CacheMgr.GetResource(req, 0, null, false));
 //        if (content == null)
 //            return null;

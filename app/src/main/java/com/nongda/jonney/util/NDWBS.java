@@ -72,11 +72,14 @@ public class NDWBS {
         TermList termList =   null;
         try {
             localJSONArray = new JSONObject(retstr).getJSONArray("Response");
-            termList  = new TermList(localJSONArray);
+
         } catch (JSONException e) {
+
             e.printStackTrace();
 
         }
+        termList  = new TermList(localJSONArray);
+
         return termList;
     }
 

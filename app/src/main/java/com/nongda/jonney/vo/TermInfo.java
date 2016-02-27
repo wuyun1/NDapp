@@ -17,12 +17,7 @@ public class TermInfo {
 
     @Override
     public String toString() {
-        return "TermInfo{" +
-                "endDate='" + endDate + '\'' +
-                ", classYear='" + classYear + '\'' +
-                ", classTerm='" + classTerm + '\'' +
-                ", beginDate='" + beginDate + '\'' +
-                '}';
+        return getClassYear()+getClassTerm();
     }
 
     public String getId() {
@@ -74,15 +69,15 @@ public class TermInfo {
             this.endDate = obj.getString("enddate");
         } catch (JSONException e) {
 
-            this.classTerm = "2016";
-            this.classYear = "下";
+            this.classTerm = "下";
+            this.classYear = "2016";
             e.printStackTrace();
         }
 
     }
     public TermInfo(){
-        this.classTerm = "2016";
-        this.classYear = "下";
+        this.classTerm = "下";
+        this.classYear = "2016";
     }
 
 }

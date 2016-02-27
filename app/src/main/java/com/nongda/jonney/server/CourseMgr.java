@@ -18,6 +18,19 @@ import java.util.List;
  * Created by Jonney on 2016/2/25.
  */
 public class CourseMgr {
+    @Override
+    public String toString() {
+        return "CourseMgr{\n" +
+                "result='" + result + '\'' +
+                "\ncourseList_1=" + courseList_1 +
+                "\ncourseList_2=" + courseList_2 +
+                "\ncourseList_3=" + courseList_3 +
+                "\ncourseList_4=" + courseList_4 +
+                "\ncourseList_5=" + courseList_5 +
+                "\ncourseList_6=" + courseList_6 +
+                "\ncourseList_7=" + courseList_7 +
+                "\n}";
+    }
 
     public String result = "";
     private List<CourseItemBase> courseList_1;
@@ -119,7 +132,7 @@ public class CourseMgr {
         JSONArray localJSONArray = null;
         try {
             localJSONArray = new JSONObject(strJson).getJSONArray("Response");
-            if (localJSONArray.length() > 0){
+            if (localJSONArray.length() <=0){
                 retstr =  "您本周没有课！";
             }else{
                 for(int i = 0,n =localJSONArray.length() ;i<n;i++){
@@ -151,13 +164,13 @@ public class CourseMgr {
                 }
 
 
-                retstr ="课表加载完成，请查看";
+                retstr ="课表加载完成";
 
             }
-            retstr= "课表加载完成，请查看";
+
         } catch (JSONException e) {
             e.printStackTrace();
-            return retstr;
+
         }
 
         result = retstr;
